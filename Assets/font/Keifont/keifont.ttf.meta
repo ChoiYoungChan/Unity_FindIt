@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 64c1abe6733744f25af259340b2e50ca
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Keifont
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 8ad41422e309746a396ee89d2e3d1c82, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
