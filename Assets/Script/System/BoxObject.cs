@@ -6,53 +6,69 @@ using UnityEngine;
 public class BoxObject : MonoBehaviour
 {
     private bool _isTouched;
-    [SerializeField] Animator _animator;
-    [SerializeField] ParticleSystem _particle;
-    [SerializeField] LootBox _lootBox;
-    [SerializeField] GameObject _coin;
-    [SerializeField] bool _isAnswer;
+    [SerializeField] Animator Animator;
+    [SerializeField] ParticleSystem Particle;
+    [SerializeField] LootBox LootBox;
+    [SerializeField] GameObject Coin;
+    [SerializeField] bool b_isAnswer;
 
 
     public void Initialize()
     {
-        _lootBox.BounceBox(false);
-        _particle.gameObject.SetActive(false);
-        _particle.Stop();
+        LootBox.BounceBox(false);
+        Particle.gameObject.SetActive(false);
+        Particle.Stop();
         _isTouched = false;
-        _isAnswer = false;
-        _lootBox.BounceBox(true);
-        _coin.SetActive(false);
+        b_isAnswer = false;
+        LootBox.BounceBox(true);
+        Coin.SetActive(false);
     }
 
+    /// <summary>
+    /// play animation and particle
+    /// </summary>
+    /// <returns></returns>
     IEnumerator OpenAnime()
     {
-        _lootBox.Open();
+        LootBox.Open();
 
-        _particle.gameObject.SetActive(true);
-        _particle.Play();
+        Particle.gameObject.SetActive(true);
+        Particle.Play();
         yield return new WaitForSeconds(1.0f);
     }
 
+    /// <summary>
+    /// set amswer amd setactove cpom object
+    /// </summary>
+    /// <param name="_answer"></param>
     public void SetIsAnswer(bool _answer)
     {
-        _isAnswer = _answer;
-        _coin.SetActive(_answer);
+        b_isAnswer = _answer;
+        Coin.SetActive(_answer);
     }
 
+    /// <summary>
+    /// get bpp; value isAnswer
+    /// </summary>
+    /// <returns></returns>
     public bool GetIsAnswer()
     {
-        return _isAnswer;
+        return b_isAnswer;
     }
 
-    public void OnAction(Action _action)
+    /// <summary>
+    /// set action when this box object is selected
+    /// </summary>
+    /// <param name="_action"></param>
+    public void SetAction(Action _action)
     {
         if (!_isTouched) {
             StartCoroutine(OpenAnime());
-            GameManager.Instance.SetIsClear(_isAnswer);
+            GameManager.Instance.SetIsClear(b_isAnswer);
             DelayControlClass.Instance.CallAfter(2.0f, () => {
                 LayerManager.Instance.MoveLayer(LayerManager.LayerKey.LayerKey_Result);
                 _action();
-                _lootBox.Close();
+                LootBox.Close();
             });
         }
     }

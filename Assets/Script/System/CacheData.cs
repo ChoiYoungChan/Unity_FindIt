@@ -7,8 +7,8 @@ public class CacheData : SingletonClass<CacheData>
 {
     public enum CacheDataKey {
         FirstOpen,
-        HintCount,
         SoundOn,
+        StageCount,
         Tutorial,
         StartCountdown
     }
@@ -21,16 +21,16 @@ public class CacheData : SingletonClass<CacheData>
         set { SetValue(GetKey(CacheDataKey.FirstOpen), !value); }
     }
 
-    public int HintCount
-    {
-        get { return GetValue<int>(GetKey(CacheDataKey.HintCount)); }
-        set { SetValue(GetKey(CacheDataKey.HintCount), value); }
-    }
-
     public bool SoundOn
     {
         get { return !GetValue<bool>(GetKey(CacheDataKey.SoundOn)); }
         set { SetValue(GetKey(CacheDataKey.SoundOn), !value); }
+    }
+
+    public int StageCount
+    {
+        get { return GetValue<int>(GetKey(CacheDataKey.StageCount)); }
+        set { SetValue(GetKey(CacheDataKey.StageCount), value); }
     }
 
     public bool Tutorial

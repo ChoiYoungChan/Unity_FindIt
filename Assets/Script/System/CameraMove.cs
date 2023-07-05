@@ -12,8 +12,8 @@ public class CameraMove : MonoBehaviour
     public float shakeDuration = 2f;
     public float shakeAmount = 0.7f;
 
-    private bool canShake = false;
-    private float _shakeTimer;
+    private bool b_canShake = false;
+    private float shakeTimer;
 
     void Start()
     {
@@ -23,26 +23,32 @@ public class CameraMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (canShake) {
+        if (b_canShake) {
             StartCameraShakeEffect();
         }
     }
 
-    public void ShakeCamera()
+    /// <summary>
+    /// set camera shake and duration
+    /// </summary>
+    public void SetShakeCamera()
     {
-        canShake = true;
-        _shakeTimer = shakeDuration;
+        b_canShake = true;
+        shakeTimer = shakeDuration;
     }
 
+    /// <summary>
+    /// start shake camera effect
+    /// </summary>
     public void StartCameraShakeEffect()
     {
-        if (_shakeTimer > 0) {
+        if (shakeTimer > 0) {
             cameraTransform.localPosition = orignalCameraPos + UnityEngine.Random.insideUnitSphere * shakeAmount;
-            _shakeTimer -= Time.deltaTime;
+            shakeTimer -= Time.deltaTime;
         } else {
-            _shakeTimer = 0f;
+            shakeTimer = 0f;
             cameraTransform.position = orignalCameraPos;
-            canShake = false;
+            b_canShake = false;
         }
     }
 }

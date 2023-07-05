@@ -18,6 +18,10 @@ public class DialogManager : SingletonClass<DialogManager>
         
     }
 
+    /// <summary>
+    /// open dialog
+    /// </summary>
+    /// <param name="_key">dialog enum key</param>
     public void OpenDialog(DialogKey _key)
     {
         _dialogList[(int)_key].gameObject.SetActive(true);

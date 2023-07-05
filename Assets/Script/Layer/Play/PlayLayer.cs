@@ -18,7 +18,7 @@ public class PlayLayer : BaseLayerTemplate
     private int _countDownTime;
     private bool _canTouch;
 
-    public virtual void Awake()
+    public override void Awake()
     {
         Initialize();
     }
@@ -26,13 +26,15 @@ public class PlayLayer : BaseLayerTemplate
     /// <summary>
     /// Initialize
     /// </summary>
-    public virtual void Initialize()
+    public override void Initialize()
     {
+        // show tutorial dialog first open only
         if (CacheData.Instance.IsFirstOpen) {
             CacheData.Instance.Tutorial = false;
             _tutorial.SetActive(true);
             CacheData.Instance.IsFirstOpen = false;
         }
+        //
         _wavePosList.Add(_cover.transform.position);
         _wavePosList.Add(new Vector2(_cover.transform.position.x - 5000, _cover.transform.position.y));
 
@@ -43,18 +45,22 @@ public class PlayLayer : BaseLayerTemplate
         });
     }
 
-    public virtual void OnEnable()
+    public override void OnEnable()
     {
         SoundManager.Instance.Play("bgm");
+        CacheData.Instance.StartCountdown = true;
+
+        // initialize countdown valuable and object when OnEnable
         _countDownTime = 3;
         _countdownImg.gameObject.SetActive(false);
-        CacheData.Instance.StartCountdown = true;
         _mapObject.gameObject.SetActive(true);
         _canTouch = false;
 
-        if (_boxList.Count < 1) {
+        // 
+        if (_boxList.Count < 1){
             GeterateObject();
         } else {
+            // 
             for(int count = 0; count < _boxList.Count; count++) {
                 _boxList[count].gameObject.GetComponent<BoxObject>().Initialize();
             }
@@ -63,6 +69,9 @@ public class PlayLayer : BaseLayerTemplate
         }
     }
 
+    /// <summary>
+    /// start count down and when treasure chest is choosed
+    /// </summary>
     private void Update()
     {
         if(CacheData.Instance.Tutorial && CacheData.Instance.StartCountdown) {
@@ -77,9 +86,18 @@ public class PlayLayer : BaseLayerTemplate
             Physics.Raycast(ray, out hit);
 
             if (hit.collider.tag == "box") {
-                hit.transform.gameObject.GetComponent<BoxObject>().OnAction(MoveLayer);
+                hit.transform.gameObject.GetComponent<BoxObject>().SetAction(MoveLayer);
             }
         }
+    }
+
+    /// <summary>
+    /// Move to Next layer
+    /// </summary>
+    public void MoveLayer()
+    {
+        CacheData.Instance.StartCountdown = false;
+        _mapObject.gameObject.SetActive(false);
     }
 
     IEnumerator Timer()
@@ -97,27 +115,34 @@ public class PlayLayer : BaseLayerTemplate
         }
     }
 
+    /// <summary>
+    /// count down timer
+    /// </summary>
+    /// <param name="_time"></param>
     private void CountDown(int _time)
     {
         // flag in anime
         _cover.transform.position = Vector2.Lerp(_cover.transform.position, _wavePosList[0], 2.0f);
         _countdownImg.gameObject.SetActive(true);
         _countdownImg.sprite = _countdownSprite[_time];
+        // when count down is done
         if (_time == 0) {
             _cover.transform.position = Vector2.Lerp(_cover.transform.position, _wavePosList[1], 2.0f);
             _countdownImg.gameObject.SetActive(false);
         }
     }
 
+    /// <summary>
+    /// generate objects and init setting when generate
+    /// </summary>
     private void GeterateObject()
     {
         Vector3 position = _firstPos.transform.position;
-        for (int i = 0; i < 5; i++)
+        for (int count = 0; count < RandomObjectNumber(); count++)
         {
             GameObject obj = Instantiate(_boxObject, position, _boxObject.transform.rotation);
             obj.GetComponent<BoxObject>().Initialize();
             position.x += 3;
-            position.z -= 3;
             _boxList.Add(obj);
         }
         var randomNum = UnityEngine.Random.Range(0, (_boxList.Count - 1));
@@ -126,11 +151,8 @@ public class PlayLayer : BaseLayerTemplate
     }
 
     /// <summary>
-    /// MoveNextlayer
+    /// randomly set number of generate objects
     /// </summary>
-    public void MoveLayer()
-    {
-        CacheData.Instance.StartCountdown = false;
-        _mapObject.gameObject.SetActive(false);
-    }
+    /// <returns></returns>
+    private int RandomObjectNumber() => UnityEngine.Random.Range(1, 6);
 }

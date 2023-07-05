@@ -5,27 +5,28 @@ using UnityEngine.UI;
 
 public class ResultLayer : BaseLayerTemplate
 {
-    [SerializeField] Button _nextBtn, _backBtn;
-    [SerializeField] Image _resultImg;
-    [SerializeField] Sprite[] _resultSprite;
+    [SerializeField] Button NextBtn, BackBtn;
+    [SerializeField] Image ResultImg;
+    [SerializeField] Sprite[] ResultSprite;
 
-    private bool canShake;
+    private bool b_canShake;
     private float _shakeTimer = 3;
 
-    public virtual void Awake()
+    public override void Awake()
     {
-        _nextBtn.onClick.AddListener(OnClickNextButton);
-        _backBtn.onClick.AddListener(OnClickBackButton);
+        NextBtn.onClick.AddListener(OnClickNextButton);
+        BackBtn.onClick.AddListener(OnClickBackButton);
     }
 
-    public virtual void OnEnable()
+    public override void OnEnable()
     {
-        canShake = false;
-        _nextBtn.gameObject.SetActive(false);
+        // initialize variable and object when OnEnable
+        b_canShake = false;
+        NextBtn.gameObject.SetActive(false);
         _shakeTimer = 3;
 
-        if (GameManager.Instance.GetIsClear())
-        {
+        // play sound according clear trigger
+        if (GameManager.Instance.GetIsClear()) {
             SoundManager.Instance.Play("clear");
         } else {
             SoundManager.Instance.Play("miss");
@@ -37,42 +38,56 @@ public class ResultLayer : BaseLayerTemplate
 
     private void Update()
     {
-        if (canShake) {
+        if (b_canShake) {
             StartShakeEffect();
         }
     }
 
+    /// <summary>
+    /// onclick action when next button is pressed
+    /// </summary>
     private void OnClickNextButton()
     {
         LayerManager.Instance.MoveLayer(LayerManager.LayerKey.LayerKey_Play);
     }
 
+    /// <summary>
+    /// onclick action when back button is pressed
+    /// </summary>
     private void OnClickBackButton()
     {
         LayerManager.Instance.MoveLayer(LayerManager.LayerKey.LayerKey_Top);
     }
 
+    /// <summary>
+    /// show result image according result trigger
+    /// </summary>
     private void ShowResultImage()
     {
-        //_resultSprite[0] = clearImage, _resultSprite[1] = failureImage
-        _resultImg.sprite = GameManager.Instance.GetIsClear() ? _resultSprite[0] : _resultSprite[1];
+        ResultImg.sprite = GameManager.Instance.GetIsClear() ? ResultSprite[0] : ResultSprite[1];
     }
 
+    /// <summary>
+    /// show result effect according result trigger
+    /// </summary>
     private void ShowResultEffect()
     {
-        if(!GameManager.Instance.GetIsClear()) canShake = true;
-        DelayControlClass.Instance.CallAfter(1.0f, ()=> { _nextBtn.gameObject.SetActive(true); });
+        if(!GameManager.Instance.GetIsClear()) b_canShake = true;
+        DelayControlClass.Instance.CallAfter(1.0f, ()=> { NextBtn.gameObject.SetActive(true); });
     }
 
+    /// <summary>
+    /// image shake effect for clear
+    /// </summary>
     public void StartShakeEffect()
     {
         if (_shakeTimer > 0) {
-            _resultImg.transform.localPosition = Vector3.zero + UnityEngine.Random.insideUnitSphere * 4.0f;
+            ResultImg.transform.localPosition = Vector3.zero + UnityEngine.Random.insideUnitSphere * 4.0f;
             _shakeTimer -= Time.deltaTime;
         } else {
             _shakeTimer = 0f;
-            _resultImg.transform.localPosition = Vector3.zero;
-            canShake = false;
+            ResultImg.transform.localPosition = Vector3.zero;
+            b_canShake = false;
         }
     }
 }

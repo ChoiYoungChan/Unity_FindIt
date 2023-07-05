@@ -9,7 +9,7 @@ public class Setting : BaseDialogTemplate
     [SerializeField] Sprite _soundOn, _soundOff;
 
     // Start is called before the first frame update
-    public virtual void Awake()
+    public override void Awake()
     {
         Initialize();
     }
@@ -17,21 +17,23 @@ public class Setting : BaseDialogTemplate
     /// <summary>
     /// Initialize
     /// </summary>
-    public virtual void Initialize()
+    public override void Initialize()
     {
         _soundBtn.onClick.AddListener(OnClickSoundBtn);
         _shareBtn.onClick.AddListener(OnClickShareBtn);
         _closeBtn.onClick.AddListener(OnClickCloseBtn);
     }
 
-    public virtual void UpdateData() { }
+    public override void UpdateData() { }
 
     private void OnEnable()
     {
         Time.timeScale = 0.0f;
     }
 
-
+    /// <summary>
+    /// onclick action when BGM button is pressed
+    /// </summary>
     private void OnClickSoundBtn()
     {
         if (GameManager.Instance.GetSoundOn()) {
@@ -41,7 +43,6 @@ public class Setting : BaseDialogTemplate
             GameManager.Instance.SetSoundOn(true);
             _soundBtn.GetComponent<Image>().sprite = _soundOn;
         }
-        SoundManager.Instance.Play("bgm");
     }
 
     private void OnClickShareBtn()
@@ -49,6 +50,9 @@ public class Setting : BaseDialogTemplate
 
     }
     
+    /// <summary>
+    /// onclick action when close button is pressed
+    /// </summary>
     private void OnClickCloseBtn()
     {
         Time.timeScale = 1.0f;

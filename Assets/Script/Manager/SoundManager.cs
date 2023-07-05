@@ -28,6 +28,10 @@ public class SoundManager : SingletonClass<SoundManager>
         }
     }
 
+    /// <summary>
+    /// play sound
+    /// </summary>
+    /// <param name="id"></param>
     public void Play(string id)
     {
         if (!GameManager.Instance.GetSoundOn()) return;
@@ -41,11 +45,13 @@ public class SoundManager : SingletonClass<SoundManager>
         if (audioSource.isPlaying) return;
         audioSource.Play();
 
-        // ループでなければ、Destroyの予約をする
         if (!_soundInfoDict[id].loop)
             StartCoroutine(FinishPlayback_Coroutine(audioSource));
     }
 
+    /// <summary>
+    /// pause sound
+    /// </summary>
     public void Pause()
     {
         foreach (var audioSource in _loopingAudioSourceDict)
@@ -54,12 +60,17 @@ public class SoundManager : SingletonClass<SoundManager>
         }
     }
 
+    /// <summary>
+    /// get audio source file
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     AudioSource GetAudioSource(string id)
     {
         if (_soundInfoDict[id].loop && _loopingAudioSourceDict.ContainsKey(id))
             return _loopingAudioSourceDict[id];
 
-        print("### SoundId : " + id);
+        Debug.Log("### SoundId : " + id);
 
         GameObject obj = new GameObject("sound_" + id);
         obj.transform.SetParent(transform);
