@@ -264,8 +264,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 125234583}
   m_LocalRotation: {x: 6.123234e-17, y: 1, z: -6.123234e-17, w: -6.123234e-17}
-  m_LocalPosition: {x: -0, y: 0.042061433, z: 0}
-  m_LocalScale: {x: 1.0850769, y: 0.87720644, z: 1}
+  m_LocalPosition: {x: 8.98, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2124540570}
@@ -1172,12 +1172,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98fecd633e890541a098cf25471cda9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextBtn: {fileID: 536785759}
-  _backBtn: {fileID: 1544311767}
-  _resultImg: {fileID: 342579078}
-  _resultSprite:
-  - {fileID: 21300000, guid: 8af72db7b112c493199a37d7b0b216e4, type: 3}
-  - {fileID: 21300000, guid: 713fc8e73364b4a8dad98541bac9c8a6, type: 3}
+  NextBtn: {fileID: 0}
+  BackBtn: {fileID: 0}
+  ResultImg: {fileID: 0}
+  ResultSprite: []
 --- !u!1 &536785757
 GameObject:
   m_ObjectHideFlags: 0
@@ -4543,11 +4541,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e50554bb21014c1eacf95cb78970f6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 1799712008}
-  _particle: {fileID: 9112010206055984219}
-  _lootBox: {fileID: 1799712005}
-  _coin: {fileID: 2124540569}
-  _isAnswer: 0
+  Animator: {fileID: 0}
+  Particle: {fileID: 0}
+  LootBox: {fileID: 0}
+  Coin: {fileID: 0}
+  b_isAnswer: 0
 --- !u!114 &1799712005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10236,7 +10234,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1307196807579863689}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.5, y: 10.5, z: 85}
+  m_LocalPosition: {x: -15.5, y: 10.5, z: 83.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
