@@ -8,6 +8,7 @@ public class ResultLayer : BaseLayerTemplate
     [SerializeField] Button NextBtn, BackBtn;
     [SerializeField] Image ResultImg;
     [SerializeField] Sprite[] ResultSprite;
+    [SerializeField] Sprite[] ButtonSprite;
 
     private bool b_canShake;
     private float _shakeTimer = 3;
@@ -65,6 +66,7 @@ public class ResultLayer : BaseLayerTemplate
     private void ShowResultImage()
     {
         ResultImg.sprite = GameManager.Instance.GetIsClear() ? ResultSprite[0] : ResultSprite[1];
+        NextBtn.GetComponent<Image>().sprite = GameManager.Instance.GetIsClear() ? ButtonSprite[0] : ButtonSprite[1];
     }
 
     /// <summary>

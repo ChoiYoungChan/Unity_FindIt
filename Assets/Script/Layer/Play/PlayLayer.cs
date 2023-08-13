@@ -15,11 +15,13 @@ public class PlayLayer : BaseLayerTemplate
 
     private List<GameObject> _boxList = new List<GameObject>();
     private List<Vector2> _wavePosList = new List<Vector2>();
+    private GameObject _chestObject;
     private int _countDownTime;
     private bool _canTouch;
 
     public override void Awake()
     {
+        Debug.Log("### Awake");
         Initialize();
     }
 
@@ -28,10 +30,12 @@ public class PlayLayer : BaseLayerTemplate
     /// </summary>
     public override void Initialize()
     {
+        Debug.Log("### Initialize");
         // show tutorial dialog first open only
         if (CacheData.Instance.IsFirstOpen) {
             CacheData.Instance.Tutorial = false;
             _tutorial.SetActive(true);
+            GenerateObject();
             CacheData.Instance.IsFirstOpen = false;
         }
         //
@@ -43,10 +47,12 @@ public class PlayLayer : BaseLayerTemplate
             _mapObject.gameObject.SetActive(false);
             LayerManager.Instance.MoveLayer(LayerManager.LayerKey.LayerKey_Top);
         });
+        _chestObject = _boxObject;
     }
 
     public override void OnEnable()
     {
+        Debug.Log("### OnEnable");
         SoundManager.Instance.Play("bgm");
         CacheData.Instance.StartCountdown = true;
 
@@ -56,17 +62,19 @@ public class PlayLayer : BaseLayerTemplate
         _mapObject.gameObject.SetActive(true);
         _canTouch = false;
 
+        int _randomObjectNumber = RandomObjectNumber();
+        SetBox(_randomObjectNumber);
+
         // 
-        if (_boxList.Count < 1){
+        /*if (_boxList.Count < 1){
             GeterateObject();
         } else {
-            // 
             for(int count = 0; count < _boxList.Count; count++) {
                 _boxList[count].gameObject.GetComponent<BoxObject>().Initialize();
             }
             var randomNum = UnityEngine.Random.Range(0, (_boxList.Count - 1));
             _boxList[randomNum].GetComponent<BoxObject>().SetIsAnswer(true);
-        }
+        }*/
     }
 
     /// <summary>
@@ -98,6 +106,7 @@ public class PlayLayer : BaseLayerTemplate
     {
         CacheData.Instance.StartCountdown = false;
         _mapObject.gameObject.SetActive(false);
+        ActiveFalseAllBox();
     }
 
     IEnumerator Timer()
@@ -135,24 +144,52 @@ public class PlayLayer : BaseLayerTemplate
     /// <summary>
     /// generate objects and init setting when generate
     /// </summary>
-    private void GeterateObject()
+    private void GenerateObject()
     {
-        Vector3 position = _firstPos.transform.position;
-        for (int count = 0; count < RandomObjectNumber(); count++)
+        Vector3 _position = _firstPos.transform.position;
+        for (int count = 0; count < 10; count++)
         {
-            GameObject obj = Instantiate(_boxObject, position, _boxObject.transform.rotation);
-            obj.GetComponent<BoxObject>().Initialize();
-            position.x += 3;
+            GameObject obj = Instantiate(_chestObject, _position, _chestObject.transform.rotation);
+            obj.SetActive(false);
             _boxList.Add(obj);
         }
-        var randomNum = UnityEngine.Random.Range(0, (_boxList.Count - 1));
-        _boxList[randomNum].GetComponent<BoxObject>().SetIsAnswer(true);
+        Debug.Log("### BoxList count : " + _boxList.Count);
         _boxObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// set box position and answer
+    /// </summary>
+    /// <param name="randomNum"></param>
+    private void SetBox(int randomNum)
+    {
+        if (_boxList.Count == null || _boxList.Count < 2) GenerateObject();
+
+        Vector3 _position = _firstPos.transform.position;
+        Debug.Log("### random number : " + randomNum);
+        for (int count = 0; count < randomNum; count++)
+        {
+            _boxList[count].gameObject.SetActive(true);
+            _boxList[count].gameObject.GetComponent<BoxObject>().Initialize();
+            _boxList[count].gameObject.transform.position = new Vector3(_position.x, _position.y, _position.z);
+            _position.x += (27 / randomNum);
+        }
+        var _randomNum = UnityEngine.Random.Range(0, (randomNum - 1));
+        _boxList[_randomNum].GetComponent<BoxObject>().SetIsAnswer(true);
     }
 
     /// <summary>
     /// randomly set number of generate objects
     /// </summary>
     /// <returns></returns>
-    private int RandomObjectNumber() => UnityEngine.Random.Range(1, 6);
+    private int RandomObjectNumber() => UnityEngine.Random.Range(2, 6);
+
+
+    private void ActiveFalseAllBox()
+    {
+        for(int count = 0; count < _boxList.Count; count++)
+        {
+            _boxList[count].gameObject.SetActive(false);
+        }
+    }
 }

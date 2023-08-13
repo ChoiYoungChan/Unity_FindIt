@@ -5,20 +5,20 @@ using UnityEngine;
 
 public class BoxObject : MonoBehaviour
 {
-    private bool _isTouched;
     [SerializeField] Animator Animator;
     [SerializeField] ParticleSystem Particle;
     [SerializeField] LootBox LootBox;
     [SerializeField] GameObject Coin;
-    [SerializeField] bool b_isAnswer;
 
+    private bool b_isTouched;
+    private bool b_isAnswer;
 
     public void Initialize()
     {
         LootBox.BounceBox(false);
         Particle.gameObject.SetActive(false);
         Particle.Stop();
-        _isTouched = false;
+        b_isTouched = false;
         b_isAnswer = false;
         LootBox.BounceBox(true);
         Coin.SetActive(false);
@@ -62,7 +62,7 @@ public class BoxObject : MonoBehaviour
     /// <param name="_action"></param>
     public void SetAction(Action _action)
     {
-        if (!_isTouched) {
+        if (!b_isTouched) {
             StartCoroutine(OpenAnime());
             GameManager.Instance.SetIsClear(b_isAnswer);
             DelayControlClass.Instance.CallAfter(2.0f, () => {

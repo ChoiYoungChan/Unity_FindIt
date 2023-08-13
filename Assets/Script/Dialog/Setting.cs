@@ -45,6 +45,9 @@ public class Setting : BaseDialogTemplate
         }
     }
 
+    /// <summary>
+    /// share this app to kakao , Line, etc
+    /// </summary>
     private void OnClickShareBtn()
     {
 
