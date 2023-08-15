@@ -31,6 +31,7 @@ public class PlayLayer : BaseLayerTemplate
     public override void Initialize()
     {
         Debug.Log("### Initialize");
+        _chestObject = _boxObject;
         // show tutorial dialog first open only
         if (CacheData.Instance.IsFirstOpen) {
             CacheData.Instance.Tutorial = false;
@@ -47,7 +48,6 @@ public class PlayLayer : BaseLayerTemplate
             _mapObject.gameObject.SetActive(false);
             LayerManager.Instance.MoveLayer(LayerManager.LayerKey.LayerKey_Top);
         });
-        _chestObject = _boxObject;
     }
 
     public override void OnEnable()

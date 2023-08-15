@@ -12,6 +12,7 @@ public class Setting : BaseDialogTemplate
     public override void Awake()
     {
         Initialize();
+        
     }
 
     /// <summary>
@@ -29,6 +30,7 @@ public class Setting : BaseDialogTemplate
     private void OnEnable()
     {
         Time.timeScale = 0.0f;
+        _soundBtn.GetComponent<Image>().sprite = GameManager.Instance.GetSoundOn() ? _soundOn : _soundOff ;
     }
 
     /// <summary>
@@ -36,12 +38,15 @@ public class Setting : BaseDialogTemplate
     /// </summary>
     private void OnClickSoundBtn()
     {
-        if (GameManager.Instance.GetSoundOn()) {
+        if (GameManager.Instance.GetSoundOn())
+        {
             GameManager.Instance.SetSoundOn(false);
             _soundBtn.GetComponent<Image>().sprite = _soundOff;
+            SoundManager.Instance.Pause();
         } else {
             GameManager.Instance.SetSoundOn(true);
             _soundBtn.GetComponent<Image>().sprite = _soundOn;
+            SoundManager.Instance.Play("bgm");
         }
     }
 

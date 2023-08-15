@@ -67,6 +67,7 @@ public class ResultLayer : BaseLayerTemplate
     {
         ResultImg.sprite = GameManager.Instance.GetIsClear() ? ResultSprite[0] : ResultSprite[1];
         NextBtn.GetComponent<Image>().sprite = GameManager.Instance.GetIsClear() ? ButtonSprite[0] : ButtonSprite[1];
+        NextBtn.GetComponent<Image>().SetNativeSize();
     }
 
     /// <summary>
